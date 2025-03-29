@@ -33,6 +33,17 @@ class DbController {
       .toArray();
     console.log(users);
   }
+
+  async debugExecute(callback: (collection: any) => Promise<any>) {
+    const collection = this.client.db("sample_mflix").collection("users");
+    try {
+      const result = await callback(collection);
+      return result;
+    } catch (error) {
+      console.error("Error executing debug command:", error);
+      throw error;
+    }
+  }
 }
 
 async function close() {
