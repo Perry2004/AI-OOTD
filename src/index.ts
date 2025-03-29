@@ -41,13 +41,15 @@ class App {
       res.send("Getting all journals...");
     });
 
-    router.post("/DEBUG", (req, res) => {
+    router.post("/DEBUG", async (req, res) => {
       const body = req.body;
       console.log(body);
-      this.dbController.executeQuery(body).then((result) => {
-        console.log(result);
-        res.json(result);
+      const result = await this.dbController.debugExecute((collection) => {
+        // return collection.find(body).toArray();
+        return collection.insertOne(body);
       });
+      console.log(result);
+      res.json(result);
     });
 
     this.app.use("/", router);
