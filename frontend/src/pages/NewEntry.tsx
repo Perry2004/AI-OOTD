@@ -35,11 +35,11 @@ const NewEntry = () => {
     localStorage.setItem('journalEntries', JSON.stringify(entries));
     
     // Navigate back to home page
-    navigate('/');
+    navigate('/home');
   };
 
   return (
-    <div className="min-h-screen bg-journal-50">
+    <div className="min-h-screen">
       <Header />
       
       <main className="container py-8 px-4 md:px-8 max-w-5xl">
