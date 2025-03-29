@@ -24,18 +24,10 @@ class DbController {
     // Send a ping to confirm a successful connection
     await this.client.db("admin").command({ ping: 1 });
     console.log("Connected successfully to MongoDB server");
-
-    // [DEBUG]: test connection
-    const users = await this.client
-      .db("sample_mflix")
-      .collection("users")
-      .find({})
-      .toArray();
-    console.log(users);
   }
 
   async debugExecute(callback: (collection: any) => Promise<any>) {
-    const collection = this.client.db("sample_mflix").collection("users");
+    const collection = this.client.db("ai-journals").collection("journals");
     try {
       const result = await callback(collection);
       return result;
