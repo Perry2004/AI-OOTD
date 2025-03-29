@@ -1,4 +1,5 @@
 import express from "express";
+import "./controller/DbController";
 const router = express.Router();
 
 router.post("/journal", (req, res) => {
