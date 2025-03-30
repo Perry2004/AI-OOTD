@@ -1,4 +1,4 @@
-# AI-OOTD
+# OOTDscribe
 
 A web application that uses AI to generate journal entries based on your outfit of the day.
 
