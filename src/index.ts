@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import DbController from "./controller/DbController";
 import AiController from "./controller/AiController";
 import multer from "multer";
+import cors from "cors";
 
 class App {
   private dbController: DbController;
@@ -31,6 +32,7 @@ class App {
 
     this.app.use(express.static("frontend/dist"));
     this.app.use(express.json());
+    this.app.use(cors());
 
     const router = express.Router();
 
