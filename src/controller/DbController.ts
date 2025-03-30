@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Collection, MongoClient, ServerApiVersion } from "mongodb";
+import {Collection, MongoClient, ObjectId, ServerApiVersion} from "mongodb";
 
 dotenv.config();
 
@@ -42,6 +42,20 @@ class DbController {
     } catch (error) {
       console.error("Error storing journal:", error);
       throw error;
+    }
+  }
+
+  async deleteJournal(journalId:any) {
+    try{
+      const result = await this.collection.deleteOne( {"_id": new ObjectId(journalId)});
+      if (result.deletedCount === 1) {
+        console.log("successfully delete", journalId);
+      } else {
+        console.log("Not found", journalId);
+      }
+      return result;
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
