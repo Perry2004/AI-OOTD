@@ -2,27 +2,28 @@ import express from "express";
 import dotenv from "dotenv";
 import DbController from "./controller/DbController";
 import AiController from "./controller/AiController";
+import multer from "multer";
 
 class App {
   private dbController: DbController;
   private aiController: AiController;
   private app: express.Application;
   private port: number;
+  private upload;
 
   constructor() {
     dotenv.config();
     const MONGODB_URI = process.env.MONGODB_URI;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!MONGODB_URI || !GEMINI_API_KEY) {
-      throw new Error(
-        "MISSING ENVIRONMENT VARIABLES: MONGODB_URI and/or GEMINI_API_KEY"
-      );
+      throw new Error("MISSING ENV VARIABLES: MONGODB_URI or GEMINI_API_KEY");
     }
 
     this.dbController = new DbController(MONGODB_URI);
     this.aiController = new AiController(GEMINI_API_KEY);
     this.app = express();
     this.port = parseInt(process.env.PORT || "3000", 10);
+    this.upload = multer({ storage: multer.memoryStorage() });
   }
 
   public async start() {
@@ -32,10 +33,26 @@ class App {
     this.app.use(express.json());
 
     const router = express.Router();
-    router.post("/journal", (req, res) => {
-      // [TODO]: generate journal
-      res.send("Generating journal...");
-    });
+    router.post(
+      "/journal",
+      this.upload.single("ootdImage"),
+      async (req, res) => {
+        const imageBase64 = req.file?.buffer.toString("base64");
+        const imageDataUrl = `data:${req.file?.mimetype};base64,${imageBase64}`;
+        const imageType = req.file?.mimetype;
+        const interestingThing = req.body.interestingThing;
+        const mood = req.body.mood;
+        const journal = await this.aiController.generateJournal(
+          imageBase64,
+          imageType,
+          interestingThing,
+          mood
+        );
+        // [TODO] store to db
+
+        res.send(journal);
+      }
+    );
 
     router.put("/journal", (req, res) => {
       // [TODO]: save journal to db
@@ -67,7 +84,6 @@ class App {
 
     this.app.use("/", router);
 
-    // Start the server
     this.app.listen(this.port, () => {
       console.log(`Server is running on port ${this.port}`);
     });
