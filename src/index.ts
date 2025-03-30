@@ -1,5 +1,5 @@
 import express from "express";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import DbController from "./controller/DbController";
 import AiController from "./controller/AiController";
 import multer from "multer";
@@ -13,7 +13,7 @@ class App {
   private upload;
 
   constructor() {
-    dotenv.config();
+    config();
     const MONGODB_URI = process.env.MONGODB_URI;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!MONGODB_URI || !GEMINI_API_KEY) {

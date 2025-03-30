@@ -16,24 +16,20 @@ const NewEntry = () => {
   const navigate = useNavigate();
 
   const handleSave = async (entry: JournalEntry) => {
-    const formDatatoGermini = new FormData();
-    formDatatoGermini.append("ootdImage", entry.image);
-    formDatatoGermini.append("interestingThing", entry.story);
-    formDatatoGermini.append("mood", entry.mood);
+    const formDatatoGemini = new FormData();
+    formDatatoGemini.append('ootdImage', entry.image);
+    formDatatoGemini.append('interestingThing', entry.story);
+    formDatatoGemini.append('mood', entry.mood);
 
-    navigate("/loading");
+    navigate('/loading');
 
     // Save the entry to the server
     try {
-      const responseFromGermini = await axios.post(
-        "http://localhost:3000/journal",
-        formDatatoGermini,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const responseFromGermini = await axios.post("http://localhost:3000/journal", formDatatoGemini, {
+      headers : {
+        'Content-Type': 'multipart/form-data',
+      },
+      });
 
       const formDatatoMongoDB = new FormData();
       formDatatoMongoDB.append("ootdImage", entry.image);
@@ -72,10 +68,10 @@ const NewEntry = () => {
   return (
     <div className="min-h-screen">
       <Header />
-
-      <main className="container py-8 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
-        <Button
-          variant="ghost"
+      
+      <main className="container py-5 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
+        <Button 
+          variant="ghost" 
           onClick={() => navigate(-1)}
           className="mb-6 text-journal-600 hover:text-journal-800 black:hover:text-journal-200 hover:bg-journal-100"
         >
