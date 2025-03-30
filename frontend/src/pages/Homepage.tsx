@@ -14,29 +14,58 @@ interface JournalEntry {
   imageDataUrl: string;
 }
 
+function useLocalStorage(key, initialValue: unknown[]) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: unknown[]) => {
+    try {
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
 const Homepage = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const filteredEntries = entries.filter(entry => {
+  const filteredEntries = entries.filter((entry) => {
     if (!searchQuery) return true;
 
     const query = searchQuery.toLowerCase();
-    return (
-        entry.journal.toLowerCase().includes(query)
-    );
+    return entry.journal.toLowerCase().includes(query);
   });
   const getJournalEntries = async () => {
     try {
       const response = await axios.get("http://localhost:3000/journal");
       setEntries(response.data);
+      // Update local storage with the fetched entries
+      const entriesForStorage = response.data.map((entry) => ({
+        time: entry.time,
+        journal: entry.journal,
+      }));
+      localStorage.setItem("journalEntries", JSON.stringify(entriesForStorage));
       console.log(response);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getJournalEntries();
@@ -68,20 +97,28 @@ const Homepage = () => {
                 <h1 className="text-3xl md:text-4xl font-serif font-medium text-journal-800 mb-1 dark:text-white">Your Journal</h1>
                 <p className="text-journal-600 dark:text-journal-400">See all your journals here.</p>
               </div>
-              <div className="w-full md:w-auto flex gap-3">
-                <div className="relative flex-1 md:w-64">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-journal-400 dark:text-journal-600" size={18} />
-                  <Input
-                      placeholder="Search entries..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 border-journal-200 dark:border-journal-800 w-full"
-                  />
-                </div>
+              <Link to="/new-entry">
+                <Button className="bg-journal-800 hover:bg-journal-900 dark:bg-journal-200 dark:hover:bg-journal-100 text-white dark:text-black">
+                  <PenLine size={18} className="mr-2" />
+                  New Entry
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {entries.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-black rounded-lg border border-journal-100 dark:border-journal-900">
+              <div className="text-center max-w-md mx-auto p-6">
+                <h2 className="text-2xl font-serif font-medium text-journal-800 dark:text-journal-200 mb-3">
+                  Start Your Journey
+                </h2>
+                <p className="text-journal-600 mb-6">
+                  Take a picture of your outfits, tell your interesting story,
+                  and create a beautiful summary of your day.
+                </p>
                 <Link to="/new-entry">
-                  <Button className="bg-journal-800 hover:bg-journal-900 dark:bg-journal-200 dark:hover:bg-journal-100 text-white dark:text-black">
-                    <PenLine size={18} className="mr-2" />
-                    New Entry
+                  <Button className="bg-journal-800 dark:bg-journal-200 hover:bg-journal-900 dark:hover:bg-journal-100 text-white dark:text-black">
+                    Create Your First Entry
                   </Button>
                 </Link>
               </div>

@@ -45,6 +45,20 @@ class DbController {
     }
   }
 
+  async deleteJournal(journalId:any) {
+    try{
+      const result = await this.collection.deleteOne( {"_id": new ObjectId(journalId)});
+      if (result.deletedCount === 1) {
+        console.log("successfully delete", journalId);
+      } else {
+        console.log("Not found", journalId);
+      }
+      return result;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   async getAllJournals() {
     try {
       const journals = await this.collection.find({}).toArray();
