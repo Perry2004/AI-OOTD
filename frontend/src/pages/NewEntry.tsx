@@ -5,6 +5,7 @@ import NewEntryForm from "@/components/NewEntryForm";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Threads from "@/components/ui/threads.tsx";
 
 interface JournalEntry {
   image: File;
@@ -66,9 +67,12 @@ const NewEntry = () => {
   };
 
   return (
-    <div className="min-h-screen">
+      <>
+      <div className={"fixed z-0 inset-0 h-full w-full"}>
+        <Threads distance={2} amplitude={5} />
+      </div>
+    <div className="fixed z-10 h-full w-full min-h-screen">
       <Header />
-      
       <main className="container py-5 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
         <Button 
           variant="ghost" 
@@ -79,7 +83,7 @@ const NewEntry = () => {
           Back
         </Button>
 
-        <div className="bg-white dark:bg-black rounded-lg border border-journal-100 dark:border-journal-900 p-6 md:p-8">
+        <div className="z-10 bg-white dark:bg-black rounded-lg border border-journal-100 dark:border-journal-900 p-6 md:p-8">
           <h1 className="text-2xl md:text-3xl font-serif font-medium text-journal-800 dark:text-journal-200 mb-6">
             Create New Journal Entry
           </h1>
@@ -87,6 +91,7 @@ const NewEntry = () => {
         </div>
       </main>
     </div>
+        </>
   );
 };
 

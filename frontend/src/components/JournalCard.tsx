@@ -1,7 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { MoreHorizontal, Edit, Share2, Trash2 } from 'lucide-react';
+import {MoreHorizontal, Edit, Share2, Trash2, ImageIcon} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface JournalEntry {
+    _id: string;
   journal: string;
   time: Date;
   imageDataUrl: string;
@@ -17,7 +18,7 @@ interface JournalEntry {
 
 interface JournalCardProps {
   entry: JournalEntry;
-  onDelete: (entry: JournalEntry) => void;
+  onDelete: (_id: string) => void;
 }
 
 const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
@@ -104,7 +105,7 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive"
-                  onClick={() => onDelete(entry)}
+                  onClick={() => onDelete(entry._id)}
               >
                 <Trash2 size={16} className="mr-2" />
                 <span>Delete</span>

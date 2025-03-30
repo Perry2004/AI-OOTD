@@ -3,7 +3,7 @@ import Orb from '@/components/ui/orb.tsx';
 
 const Loading: React.FC = () => (
     <>
-    <div className="fixed w-full h-[600px] z-0 inset-0 bg-black min-h-screen items-center justify-center">
+    <div className="fixed w-full h-[600px] z-0 inset-0 bg-black min-h-screen items-center justify-center animate-fade-in">
         <Orb />
     </div>
     <div className="fixed h-full w-full z-10 items-center justify-center flex">

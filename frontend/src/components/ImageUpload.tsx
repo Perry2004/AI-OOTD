@@ -63,7 +63,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className }) =
           htmlFor="image-upload"
           className="w-full h-full flex flex-col items-center justify-center cursor-pointer
           border-journal-200 dark:border-journal-800 dark:bg-journal-950 text-journal-950 dark:text-journal-300
-          hover:text-journal-700 dark:hover:text-journal-300 transition-colors"
+          hover:text-journal-700 dark:hover:text-journal-300"
         >
           <div className="flex flex-col items-center space-y-3 p-6">
             <ImageIcon size={40} />

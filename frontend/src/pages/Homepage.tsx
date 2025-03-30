@@ -7,8 +7,10 @@ import {PenLine, Search} from "lucide-react";
 import {Input} from "@/components/ui/input.tsx";
 import Threads from '@/components/ui/threads.tsx';
 import axios from "axios";
+import {toast} from '@/hooks/use-toast';
 
 interface JournalEntry {
+  _id : string
   journal: string;
   time: Date;
   imageDataUrl: string;
@@ -31,7 +33,7 @@ const Homepage = () => {
     try {
       const response = await axios.get("http://localhost:3000/journal");
       setEntries(response.data);
-      console.log(response);
+      console.log(response.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -42,15 +44,28 @@ const Homepage = () => {
     getJournalEntries();
   }, []);
 
-  const handleDeleteEntry = (entry: JournalEntry) => {
-    // const updatedEntries = entries.filter(entry => entry.id !== id);
-    // setEntries(updatedEntries);
-    // localStorage.setItem('journalEntries', JSON.stringify(updatedEntries));
-    //
-    // toast({
-    //   title: "Entry deleted",
-    //   description: "Your journal entry has been removed",
-    // });
+  const handleDeleteEntry = async (_id: string) => {
+    setEntries(entries.filter(entry => entry._id !== _id));
+    try {
+      await axios.delete("http://localhost:3000/journal", {
+        data: {
+          "_id": _id
+        }
+      });
+
+      toast({
+        title: "Entry deleted",
+        description: "Your journal entry has been removed",
+      });
+
+    } catch (error) {
+        console.log(error);
+      toast({
+        title: "Error",
+        description: "Failed to delete your journal entry",
+        variant: "destructive",
+      })
+    }
   };
 
   return (
