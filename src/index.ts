@@ -86,6 +86,12 @@ class App {
       }
     );
 
+    router.delete("/journal", async(req,res) => {
+      const {_id} = req.body;
+      const result = await this.dbController.deleteJournal(_id);
+      res.json(result);
+    })
+
     // List all journals
     router.get("/journal", async (req, res) => {
       const journals = await this.dbController.getAllJournals();
