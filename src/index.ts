@@ -33,6 +33,8 @@ class App {
     this.app.use(express.json());
 
     const router = express.Router();
+
+    // Generate journal
     router.post(
       "/journal",
       this.upload.single("ootdImage"),
@@ -57,6 +59,7 @@ class App {
       }
     );
 
+    // Store journal
     router.put(
       "/journal",
       this.upload.single("ootdImage"),
@@ -81,9 +84,10 @@ class App {
       }
     );
 
-    router.get("/journal", (req, res) => {
-      // [TODO]: get all journals
-      res.send("Getting all journals...");
+    // List all journals
+    router.get("/journal", async (req, res) => {
+      const journals = await this.dbController.getAllJournals();
+      res.json(journals);
     });
 
     router.post("/DEBUG", async (req, res) => {

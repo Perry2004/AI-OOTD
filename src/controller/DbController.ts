@@ -42,6 +42,16 @@ class DbController {
     }
   }
 
+  async getAllJournals() {
+    try {
+      const journals = await this.collection.find({}).toArray();
+      return journals;
+    } catch (error) {
+      console.error("Error fetching journals:", error);
+      throw error;
+    }
+  }
+
   async debugExecute(callback: (collection: any) => Promise<any>) {
     const collection = this.client.db("sample_mflix").collection("users");
     try {
