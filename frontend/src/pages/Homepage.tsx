@@ -8,56 +8,49 @@ import { useToast } from '@/hooks/use-toast';
 import {PenLine, Search} from "lucide-react";
 import {Input} from "@/components/ui/input.tsx";
 import Threads from '@/components/ui/threads.tsx';
+import axios from "axios";
 
 interface JournalEntry {
-  id: string;
-  image: string;
-  story: string;
-  mood: string;
+  journal: string;
   date: Date;
+  image: string;
 }
 
 const Homepage = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const { toast } = useToast();
 
   const filteredEntries = entries.filter(entry => {
     if (!searchQuery) return true;
 
     const query = searchQuery.toLowerCase();
     return (
-        entry.story.toLowerCase().includes(query)
+        entry.journal.toLowerCase().includes(query)
     );
   });
-
-  // Load entries from localStorage on mount
-  useEffect(() => {
-    const savedEntries = localStorage.getItem('journalEntries');
-    if (savedEntries) {
-      try {
-        const parsed = JSON.parse(savedEntries);
-        // Convert string dates back to Date objects
-        const entriesWithDates = parsed.map((entry: JournalEntry) => ({
-          ...entry,
-          date: new Date(entry.date)
-        }));
-        setEntries(entriesWithDates);
-      } catch (error) {
-        console.error('Error parsing saved entries:', error);
-      }
+  const getJournalEntries = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/journal");
+      setEntries(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
+  }
+
+  useEffect(() => {
+    getJournalEntries();
   }, []);
 
   const handleDeleteEntry = (id: string) => {
-    const updatedEntries = entries.filter(entry => entry.id !== id);
-    setEntries(updatedEntries);
-    localStorage.setItem('journalEntries', JSON.stringify(updatedEntries));
-    
-    toast({
-      title: "Entry deleted",
-      description: "Your journal entry has been removed",
-    });
+    // const updatedEntries = entries.filter(entry => entry.id !== id);
+    // setEntries(updatedEntries);
+    // localStorage.setItem('journalEntries', JSON.stringify(updatedEntries));
+    //
+    // toast({
+    //   title: "Entry deleted",
+    //   description: "Your journal entry has been removed",
+    // });
   };
 
   return (
@@ -109,11 +102,7 @@ const Homepage = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {filteredEntries.map(entry => (
-                      <JournalCard
-                          key={entry.id}
-                          entry={entry}
-                          onDelete={handleDeleteEntry}
-                      />
+                      <JournalCard entry={entry}/>
                   ))}
                 </div>
             )}

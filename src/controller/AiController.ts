@@ -1,8 +1,8 @@
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 
-const geminiApiKey: string = "";
+// const geminiApiKey: string = "";
 
-const genAI = new GoogleGenerativeAI(geminiApiKey);
+// const genAI = new GoogleGenerativeAI(geminiApiKey);
 
 export default class AiController {
   private model: GenerativeModel;
@@ -20,7 +20,7 @@ export default class AiController {
   public async generateJournal(imageBase64, imageType, interestingThing, mood) {
     const promptTemplate = `
     Today I have done: ${interestingThing}. 
-    Today I feel ${mood}. Here's my OOTD. 
+    Today I feel ${mood}. Here's my Outfit of the Day. 
     Generate a 50-70 words daily journal as a return. 
     Act like myself writing it. No introduction needed.
     Use lots of emojis and ascii art.
@@ -28,7 +28,7 @@ export default class AiController {
     Be as creative as you can. 
     `;
 
-    const parts = [
+    const parts: any = [
       { text: promptTemplate },
       {
         inlineData: {
