@@ -12,10 +12,9 @@ import Threads from '@/components/ui/threads.tsx';
 interface JournalEntry {
   id: string;
   image: string;
-  title: string;
   story: string;
+  mood: string;
   date: Date;
-  tags: string[];
 }
 
 const Homepage = () => {
@@ -28,9 +27,7 @@ const Homepage = () => {
 
     const query = searchQuery.toLowerCase();
     return (
-        entry.title.toLowerCase().includes(query) ||
-        entry.story.toLowerCase().includes(query) ||
-        entry.tags.some(tag => tag.toLowerCase().includes(query))
+        entry.story.toLowerCase().includes(query)
     );
   });
 
@@ -66,7 +63,7 @@ const Homepage = () => {
   return (
       <>
         <div className={"fixed z-0 inset-0 h-full w-full"}>
-            <Threads distance={2} amplitude={5}/>
+            <Threads distance={2} amplitude={5} />
         </div>
         <div className={"fixed z-10 h-full w-full"}>
           <Header />

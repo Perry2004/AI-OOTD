@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage.tsx";
 import NewEntry from "./pages/NewEntry";
-import EditEntry from "./pages/EditEntry";
 import Index from "./pages/Index.tsx";
+import Link from "./pages/Loading.tsx";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
             <Route path="/home" element={<Homepage />} />
           <Route path="/new-entry" element={<NewEntry />} />
-          <Route path="/edit/:id" element={<EditEntry />} />
+            <Route path="/loading" element={<Link />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

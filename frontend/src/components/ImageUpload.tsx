@@ -51,31 +51,25 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className }) =
             alt="Outfit preview" 
             className="w-full h-full object-cover"
           />
-          <button 
+          <button
             onClick={handleRemoveImage}
-            className="absolute top-2 right-2 p-1 bg-white/80 rounded-full hover:bg-white"
+            className="absolute top-2 right-2 p-1 bg-white/80 dark:bg-black/80 rounded-full hover:bg-white dark:hover:bg-black transition-colors"
           >
             <X size={18} className="text-journal-800" />
           </button>
         </div>
       ) : (
-        <label 
+        <label
           htmlFor="image-upload"
-          className="w-full h-full flex flex-col items-center justify-center cursor-pointer text-journal-500 hover:text-journal-700 transition-colors"
+          className="w-full h-full flex flex-col items-center justify-center cursor-pointer
+          border-journal-200 dark:border-journal-800 dark:bg-journal-950 text-journal-950 dark:text-journal-300
+          hover:text-journal-700 dark:hover:text-journal-300 transition-colors"
         >
           <div className="flex flex-col items-center space-y-3 p-6">
             <ImageIcon size={40} />
             <p className="text-sm font-medium">Upload your outfit photo</p>
-            <Button 
-              variant="outline" 
-              className="mt-2 flex items-center space-x-2"
-              type="button"
-            >
-              <Upload size={16} />
-              <span>Choose Image</span>
-            </Button>
           </div>
-        </label>
+        </label >
       )}
     </div>
   );

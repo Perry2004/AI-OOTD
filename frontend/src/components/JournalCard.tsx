@@ -13,10 +13,9 @@ import { Link } from 'react-router-dom';
 interface JournalEntry {
   id: string;
   image: string;
-  title: string;
   story: string;
+  mood: string;
   date: Date;
-  tags: string[];
 }
 
 interface JournalCardProps {
@@ -39,8 +38,7 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
     <div className="journal-entry flex flex-col h-full">
       <div className="relative">
         <img 
-          src={entry.image} 
-          alt={entry.title} 
+          src={entry.image}
           className="journal-card-image"
         />
         <div className="absolute top-3 right-3">
@@ -75,19 +73,11 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
       
       <div className="p-4 flex-1 flex flex-col">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="font-serif text-lg font-medium text-journal-800">{entry.title}</h3>
           <span className="text-xs text-journal-500">{format(entry.date, 'MMM d, yyyy')}</span>
         </div>
         
         <p className="text-sm text-journal-600 mb-3 flex-1">{truncateStory(entry.story)}</p>
-        
-        <div className="flex flex-wrap">
-          {entry.tags.map(tag => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
+
       </div>
     </div>
   );
