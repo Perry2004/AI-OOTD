@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 import { MoreHorizontal, Edit, Share2, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -17,14 +17,14 @@ interface JournalEntry {
 
 interface JournalCardProps {
   entry: JournalEntry;
-  // onDelete: (id: string) => void;
+  onDelete: (entry: JournalEntry) => void;
 }
 
-const JournalCard: React.FC<JournalCardProps> = ({ entry }) => {
+const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
 
   const handleShareClick = () => {
-    alert('Sharing functionality would be implemented here');
-  };
+    alert("Share clicked");
+  }
 
   return (
     <div className="journal-entry flex flex-col h-full dark:bg-journal-900 dark:border-journal-900">
@@ -42,15 +42,18 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem className="cursor-pointer" asChild>
+                <Link to={`/edit`} className="w-full flex items-center">
                   <Edit size={16} className="mr-2" />
                   <span>Edit</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={handleShareClick}>
                 <Share2 size={16} className="mr-2" />
                 <span>Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="cursor-pointer text-destructive focus:text-destructive"
+              <DropdownMenuItem
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                  onClick={() => onDelete(entry)}
               >
                 <Trash2 size={16} className="mr-2" />
                 <span>Delete</span>

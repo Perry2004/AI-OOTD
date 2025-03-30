@@ -17,18 +17,16 @@ const NewEntry = () => {
   const navigate = useNavigate();
   
   const handleSave = async (entry: JournalEntry) => {
-    const formDatatoGermini = new FormData();
-    formDatatoGermini.append('ootdImage', entry.image);
-    formDatatoGermini.append('interestingThing', entry.story);
-    formDatatoGermini.append('mood', entry.mood);
-
-
+    const formDatatoGemini = new FormData();
+    formDatatoGemini.append('ootdImage', entry.image);
+    formDatatoGemini.append('interestingThing', entry.story);
+    formDatatoGemini.append('mood', entry.mood);
 
     navigate('/loading');
 
     // Save the entry to the server
     try {
-      const responseFromGermini = await axios.post("http://localhost:3000/journal", formDatatoGermini, {
+      const responseFromGermini = await axios.post("http://localhost:3000/journal", formDatatoGemini, {
       headers : {
         'Content-Type': 'multipart/form-data',
       },
@@ -55,7 +53,7 @@ const NewEntry = () => {
     <div className="min-h-screen">
       <Header />
       
-      <main className="container py-8 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
+      <main className="container py-5 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
         <Button 
           variant="ghost" 
           onClick={() => navigate(-1)}

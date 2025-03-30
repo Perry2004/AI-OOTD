@@ -22,7 +22,6 @@ interface NewEntryFormProps {
 
 const NewEntryForm: React.FC<NewEntryFormProps> = ({ onSave }) => {
   const [story, setStory] = useState('');
-  const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState<File | null>(null);
   const [mood, setMood] = useState<string | null>(null);
   const { toast } = useToast();
@@ -73,31 +72,8 @@ const NewEntryForm: React.FC<NewEntryFormProps> = ({ onSave }) => {
               placeholder="Share the story behind your outfit - what inspired you, how it makes you feel, where you're going..."
               value={story}
               onChange={(e) => setStory(e.target.value)}
-              className="min-h-[350px] border-journal-200 dark:border-journal-800 focus-visible:ring-journal-500"
+              className="min-h-[325px] border-journal-200 dark:border-journal-800 focus-visible:ring-journal-500"
             />
-          </div>
-          
-          <div>
-            <Label className="text-journal-700 dark:text-journal-50 font-medium mb-3 block">Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left border-journal-200 dark:border-journal-800 hover:bg-journal-50 dark:hover:bg-journal-900"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={(date) => date && setDate(date)}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
           </div>
           <div>
              <Label className="text-journal-700 dark:text-journal-50 font-medium mb-3 block">Your Mood</Label>

@@ -1,11 +1,13 @@
 import React from 'react';
-import MagnetLines from "@/components/ui/magnetic-lines.tsx";
+import Orb from '@/components/ui/orb.tsx';
 
 const Loading: React.FC = () => (
     <>
-    <div className="fixed z-10 min-h-screen items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-journal-800"></div>
-        <div className={"font-bold text-xl mt-5"}>
+    <div className="fixed w-full h-[600px] z-0 inset-0 bg-black min-h-screen items-center justify-center">
+        <Orb />
+    </div>
+    <div className="fixed h-full w-full z-10 items-center justify-center flex">
+        <div className={"font-bold text-6xl mt-5 text-white animate-fade-in-up-fast"}>
             Generating your journal...
         </div>
     </div>
