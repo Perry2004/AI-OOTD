@@ -1,22 +1,18 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, ChevronDown, Plus, X } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import { useToast } from '@/hooks/use-toast';
-import MoodSlider from "@/components/MoodSlider.tsx";
 
 interface JournalEntry {
-  id: string;
-  image: string;
+  image: File;
   story: string;
-  date: Date;
   mood: string;
 }
 
@@ -51,16 +47,9 @@ const NewEntryForm: React.FC<NewEntryFormProps> = ({ onSave }) => {
       return;
     }
     
-    // In a real app, this would upload the image to a server and get a URL
-    // For this demo, we'll use a placeholder
-    const imageUrl = URL.createObjectURL(image);
-    console.log(imageUrl);
-    
     const newEntry: JournalEntry = {
-      id: Date.now().toString(),
-      image: imageUrl,
+      image,
       story,
-      date,
       mood,
     };
     

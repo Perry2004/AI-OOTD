@@ -5,33 +5,47 @@ import Header from '@/components/Header';
 import NewEntryForm from '@/components/NewEntryForm';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 interface JournalEntry {
-  id: string;
-  image: string;
+  image: File;
   story: string;
   mood: string;
-  date: Date;
 }
 
 const NewEntry = () => {
   const navigate = useNavigate();
   
-  const handleSave = (entry: JournalEntry) => {
-    // Save the new entry to localStorage
-    const savedEntries = localStorage.getItem('journalEntries');
-    let entries: JournalEntry[] = [];
-    
-    if (savedEntries) {
-      try {
-        entries = JSON.parse(savedEntries);
-      } catch (error) {
-        console.error('Error parsing saved entries:', error);
-      }
+  const handleSave = async (entry: JournalEntry) => {
+    const formDatatoGermini = new FormData();
+    formDatatoGermini.append('ootdImage', entry.image);
+    formDatatoGermini.append('interestingThing', entry.story);
+    formDatatoGermini.append('mood', entry.mood);
+
+
+
+    navigate('/loading');
+
+    // Save the entry to the server
+    try {
+      const responseFromGermini = await axios.post("http://localhost:3000/journal", formDatatoGermini, {
+      headers : {
+        'Content-Type': 'multipart/form-data',
+      },
+      });
+
+      const formDatatoMongoDB = new FormData();
+      formDatatoMongoDB.append('ootdImage', entry.image);
+      formDatatoMongoDB.append('journal', responseFromGermini.data);
+
+      const mongoDB = await axios.put("http://localhost:3000/journal", formDatatoMongoDB, {
+        headers : {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    } catch (error) {
+      console.log(error);
     }
-    
-    entries.unshift(entry);
-    localStorage.setItem('journalEntries', JSON.stringify(entries));
     
     // Navigate back to home page
     navigate('/home');

@@ -1,16 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SunMoon } from 'lucide-react';
-
-interface JournalEntry {
-    id: string;
-    image: string;
-    title: string;
-    story: string;
-    date: Date;
-    tags: string[];
-}
-
 const Header = () => {
 
     const handleDarkLightMode = () => {
