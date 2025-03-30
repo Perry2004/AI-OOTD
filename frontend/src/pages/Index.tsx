@@ -16,7 +16,7 @@ const Index = () => {
             <div className={"fixed inset-0 z-0 bg-black/10 h-full w-full"} />
             <div className={"fixed z-10 w-full h-full bg-black/50 items-center justify-center flex flex-col"}>
                 <div className="animate-fade-in">
-                    <h1 className={"flex font-bold text-white text-7xl transition-all"}>AI-OOTD</h1>
+                    <h1 className={"flex font-bold text-white text-7xl transition-all"}>OOTDscribe</h1>
                     <h3 className={"flex font-semibold text-white text-3xl "}>Document your journey, one outfit and story at a time.</h3>
                 </div>
                 <div className={"animate-fade-in-up-slow flex flex-col pt-8"}>

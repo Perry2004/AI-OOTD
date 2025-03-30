@@ -22,6 +22,10 @@ interface JournalCardProps {
 }
 
 const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
+  const handleEditClick = () => {
+    alert("Edit clicked");
+  };
+
   const handleShareClick = () => {
     alert("Share clicked");
   };
@@ -121,11 +125,9 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link to={`/edit`} className="w-full flex items-center">
+              <DropdownMenuItem className="cursor-pointer" onClick={handleEditClick}>
                   <Edit size={16} className="mr-2" />
                   <span>Edit</span>
-                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
