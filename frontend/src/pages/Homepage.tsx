@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PenLine, Search } from "lucide-react";
 import { Input } from "@/components/ui/input.tsx";
 import Threads from "@/components/ui/threads.tsx";
-import axios from "axios";
+import api from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
 interface JournalEntry {
@@ -59,7 +59,7 @@ const Homepage = () => {
   });
   const getJournalEntries = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/journal");
+      const response = await api.get("/journal");
       setEntries(response.data);
 
       // local storage stuff
@@ -86,7 +86,7 @@ const Homepage = () => {
   const handleDeleteEntry = async (_id: string) => {
     setEntries(entries.filter((entry) => entry._id !== _id));
     try {
-      await axios.delete("http://localhost:3000/journal", {
+      await api.delete("/journal", {
         data: {
           _id: _id,
         },
