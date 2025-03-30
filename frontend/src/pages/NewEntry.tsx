@@ -67,8 +67,10 @@ const NewEntry = () => {
       <div className={"fixed z-0 inset-0 h-full w-full"}>
         <Threads distance={2} amplitude={5} />
       </div>
-      <div className="fixed z-10 h-full w-full min-h-screen">
-        <Header />
+      <div className="fixed z-10 h-full w-full min-h-screen overflow-y-scroll">
+        <div className={"sticky top-0 z-50"}>
+          <Header />
+        </div>
         <main className="container py-5 px-4 md:px-8 max-w-5xl animate-fade-in-up-fast">
           <Button
             variant="ghost"
