@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Collection, MongoClient, ServerApiVersion } from "mongodb";
 dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
@@ -8,6 +8,7 @@ if (!MONGODB_URI) {
 
 class DbController {
   private client: MongoClient;
+  private collection: Collection;
 
   constructor(mongodbUri: string) {
     this.client = new MongoClient(mongodbUri, {
@@ -17,6 +18,7 @@ class DbController {
         deprecationErrors: true,
       },
     });
+    this.collection = this.client.db("ai-journals").collection("journals");
   }
 
   async connectDB() {
@@ -24,6 +26,30 @@ class DbController {
     // Send a ping to confirm a successful connection
     await this.client.db("admin").command({ ping: 1 });
     console.log("Connected successfully to MongoDB server");
+  }
+
+  async storeJournal(journal: string, imageDataUrl: string) {
+    try {
+      const result = await this.collection.insertOne({
+        journal: journal,
+        imageDataUrl: imageDataUrl,
+        time: new Date(),
+      });
+      console.log("Journal stored with id:", result.insertedId);
+    } catch (error) {
+      console.error("Error storing journal:", error);
+      throw error;
+    }
+  }
+
+  async getAllJournals() {
+    try {
+      const journals = await this.collection.find({}).toArray();
+      return journals;
+    } catch (error) {
+      console.error("Error fetching journals:", error);
+      throw error;
+    }
   }
 
   async debugExecute(callback: (collection: any) => Promise<any>) {

@@ -33,35 +33,61 @@ class App {
     this.app.use(express.json());
 
     const router = express.Router();
+
+    // Generate journal
     router.post(
       "/journal",
       this.upload.single("ootdImage"),
       async (req, res) => {
         const imageBase64 = req.file?.buffer.toString("base64");
-        const imageDataUrl = `data:${req.file?.mimetype};base64,${imageBase64}`;
         const imageType = req.file?.mimetype;
         const interestingThing = req.body.interestingThing;
         const mood = req.body.mood;
+        // if missing any of the required fields, return 400
+        if (!imageBase64 || !interestingThing || !mood) {
+          return res
+            .status(400)
+            .send("Image, interesting thing, and mood are required");
+        }
         const journal = await this.aiController.generateJournal(
           imageBase64,
           imageType,
           interestingThing,
           mood
         );
-        // [TODO] store to db
-
         res.send(journal);
       }
     );
 
-    router.put("/journal", (req, res) => {
-      // [TODO]: save journal to db
-      res.send("Saving to db...");
-    });
+    // Store journal
+    router.put(
+      "/journal",
+      this.upload.single("ootdImage"),
+      async (req, res) => {
+        try {
+          const imageBase64 = req.file?.buffer.toString("base64");
+          const imageDataUrl = `data:${req.file?.mimetype};base64,${imageBase64}`;
+          const { journal } = req.body;
 
-    router.get("/journal", (req, res) => {
-      // [TODO]: get all journals
-      res.send("Getting all journals...");
+          if (!journal || !imageBase64) {
+            return res
+              .status(400)
+              .send("Journal content and image are required");
+          }
+
+          await this.dbController.storeJournal(journal, imageDataUrl);
+          res.send(journal);
+        } catch (error) {
+          console.error("Error saving journal:", error);
+          res.status(500).send("Error saving journal to database");
+        }
+      }
+    );
+
+    // List all journals
+    router.get("/journal", async (req, res) => {
+      const journals = await this.dbController.getAllJournals();
+      res.json(journals);
     });
 
     router.post("/DEBUG/db", async (req, res) => {
