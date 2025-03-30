@@ -1,7 +1,7 @@
-import React from 'react';
-import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-import { MoreHorizontal, Edit, Share2, Trash2 } from 'lucide-react';
+import React from "react";
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import { MoreHorizontal, Edit, Share2, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,10 +21,9 @@ interface JournalCardProps {
 }
 
 const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
-
   const handleShareClick = () => {
     alert("Share clicked");
-  }
+  };
 
   return (
     <div className="journal-entry flex flex-col h-full dark:bg-journal-900 dark:border-journal-900">
@@ -43,17 +42,49 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
             </div>
 
             {/* Glowing icon */}
-            <div className="flex flex-col items-center z-10">
-              <div className="p-3 rounded-full bg-white/10 backdrop-blur-sm animate-pulse-slow shadow-lg glow-effect">
-                <ImageIcon
-                  size={32}
-                  className="text-indigo-300 dark:text-indigo-400"
-                />
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <div className="relative">
+                <div className="w-20 h-20 rounded-full bg-white/90 dark:bg-journal-800/90 flex items-center justify-center glow-effect">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 via-indigo-300 to-pink-300 dark:from-purple-600 dark:via-indigo-600 dark:to-pink-600 flex items-center justify-center animate-spin duration-2000">
+                    <div className="w-14 h-14 rounded-full bg-white/90 dark:bg-journal-800/90 flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-purple-500 dark:text-purple-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <span className="text-sm mt-3 font-medium text-gray-500 dark:text-gray-400">
-                Loading image...
+
+              <span className="text-sm mt-4 font-medium text-gray-600 dark:text-gray-300 animate-pulse">
+                Loading...
               </span>
             </div>
+
+            <style>{`
+              .animate-spin {
+                animation: spin 1.5s linear infinite;
+              }
+
+              @keyframes spin {
+                from {
+                  transform: rotate(0deg);
+                }
+                to {
+                  transform: rotate(360deg);
+                }
+              }
+            `}</style>
 
             <style>
               {`
@@ -103,8 +134,8 @@ const JournalCard: React.FC<JournalCardProps> = ({ entry, onDelete }) => {
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                  className="cursor-pointer text-destructive focus:text-destructive"
-                  onClick={() => onDelete(entry)}
+                className="cursor-pointer text-destructive focus:text-destructive"
+                onClick={() => onDelete(entry)}
               >
                 <Trash2 size={16} className="mr-2" />
                 <span>Delete</span>
