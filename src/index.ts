@@ -49,6 +49,7 @@ class App {
           mood
         );
         // [TODO] store to db
+        await this.dbController.storeJournal(journal, imageDataUrl);
 
         res.send(journal);
       }
