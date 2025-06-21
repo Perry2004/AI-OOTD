@@ -2,23 +2,37 @@ package net.perryz.ai_ootd.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import net.perryz.ai_ootd.dto.GenerateJournalDto;
+import net.perryz.ai_ootd.service.JournalService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.http.ResponseEntity;
 
 @RestController
 @Slf4j
 public class JournalController {
+
+    private final JournalService journalService;
+
+    public JournalController(JournalService journalService) {
+        this.journalService = journalService;
+    }
+
     @PutMapping("/journal")
-    public ResponseEntity<String> generateNewJournal(@RequestBody String entity) {
+    public ResponseEntity<String> generateNewJournal(@ModelAttribute GenerateJournalDto generateJournalDto) {
         // [TODO]: handle request
-        logRequest("PUT", "/journal", entity);
-        return ResponseEntity.ok().body("A new journal should be generated");
+        logRequest("PUT", "/journal", generateJournalDto.toString());
+        var newEntry = journalService.generateNewJournal(generateJournalDto);
+        return ResponseEntity.ok().body(newEntry.toString());
     }
 
     @PostMapping("/journal")
