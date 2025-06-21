@@ -26,7 +26,7 @@ const NewEntry = () => {
 
     // Save the entry to the server
     try {
-      const responseFromGermini = await api.post("/journal", formDatatoGemini, {
+      const responseFromGermini = await api.put("/journal", formDatatoGemini, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -36,7 +36,7 @@ const NewEntry = () => {
       formDatatoMongoDB.append("ootdImage", entry.image);
       formDatatoMongoDB.append("journal", responseFromGermini.data);
 
-      const mongoDB = await api.put("/journal", formDatatoMongoDB, {
+      const mongoDB = await api.post("/journal", formDatatoMongoDB, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
