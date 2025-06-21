@@ -1,0 +1,36 @@
+services:
+  frontend:
+    build: frontend/
+    ports:
+      - 8080:8080
+    environment:
+      - BACKEND_URL=backend:3000
+
+  backend:
+    build:
+      context: backend/ai-ootd/
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    env_file:
+      - backend/ai-ootd/.env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    command: mongod --setParameter logComponentVerbosity='{network:{verbosity:0}}'
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 60s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+volumes:
+  mongodb_data:
+    driver: local
