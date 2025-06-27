@@ -12,24 +12,16 @@ import net.perryz.ai_ootd.model.JournalEntry;
 @Slf4j
 public class JournalService {
     private final AiClient aiClient;
+    private final ImageStorageService imageStorageService;
 
-    public JournalService(AiClient aiClient) {
+    public JournalService(AiClient aiClient, ImageStorageService imageStorageService) {
         this.aiClient = aiClient;
+        this.imageStorageService = imageStorageService;
     }
 
     public JournalEntry generateNewJournal(GenerateJournalDto generateJournalDto) {
         log.info("Reached generateNewJournal with DTO: {}", generateJournalDto);
+        imageStorageService.storeImage(generateJournalDto.ootdImage());
         return new JournalEntry("Some dummy journal text", "image path", java.time.LocalDateTime.now());
     }
-
-    @PostConstruct
-    public void test() {
-        try {
-            log.info(aiClient.invokeAi("Hello, how are you?"));
-        } catch (Exception e) {
-            log.error("Error invoking AI client: {}", e.getMessage(), e);
-            e.printStackTrace();
-        }
-    }
-
 }

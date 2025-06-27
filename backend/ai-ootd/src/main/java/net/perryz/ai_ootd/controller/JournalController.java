@@ -2,8 +2,6 @@ package net.perryz.ai_ootd.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import net.perryz.ai_ootd.dto.GenerateJournalDto;
 import net.perryz.ai_ootd.service.JournalService;
