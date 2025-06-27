@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.perryz.ai_ootd.dto.GenerateJournalDto;
 import net.perryz.ai_ootd.service.JournalService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class JournalController {
 
