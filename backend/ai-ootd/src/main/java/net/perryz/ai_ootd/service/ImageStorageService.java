@@ -23,16 +23,31 @@ public class ImageStorageService {
         }
     }
 
-    public void storeImage(MultipartFile imageFile) {
+    public String storeImage(MultipartFile imageFile) {
         var imageName = getNameFromContentHash(imageFile);
         var imagePath = Paths.get(storagePath, imageName).toString();
         try {
             Paths.get(imagePath).toFile().getParentFile().mkdirs();
             imageFile.transferTo(Paths.get(imagePath));
             log.info("Stored image at: {}", imagePath);
+            return imagePath;
         } catch (Exception e) {
             log.error("Failed to store image file", e);
             throw new RuntimeException("Could not store image file", e);
+        }
+    }
+
+    public void deleteImage(String imagePath) {
+        try {
+            var file = Paths.get(imagePath).toFile();
+            if (file.exists() && file.delete()) {
+                log.info("Deleted image file at: {}", imagePath);
+            } else {
+                log.warn("Failed to delete image file at: {}", imagePath);
+            }
+        } catch (Exception e) {
+            log.error("Failed to delete image file", e);
+            throw new RuntimeException("Could not delete image file", e);
         }
     }
 

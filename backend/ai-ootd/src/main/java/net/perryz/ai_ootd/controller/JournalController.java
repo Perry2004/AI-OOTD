@@ -3,8 +3,13 @@ package net.perryz.ai_ootd.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import net.perryz.ai_ootd.dto.DeleteJournalRequest;
 import net.perryz.ai_ootd.dto.GenerateJournalDto;
+import net.perryz.ai_ootd.dto.StoreJournalDto;
+import net.perryz.ai_ootd.model.Journal;
 import net.perryz.ai_ootd.service.JournalService;
+
+import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,33 +32,54 @@ public class JournalController {
         this.journalService = journalService;
     }
 
+    /**
+     * Generate a new journal entry
+     * 
+     * @param generateJournalDto
+     * @return
+     */
     @PutMapping("/journal")
     public ResponseEntity<String> generateNewJournal(@ModelAttribute GenerateJournalDto generateJournalDto) {
-        // [TODO]: handle request
         logRequest("PUT", "/journal", generateJournalDto.toString());
         var newEntry = journalService.generateNewJournal(generateJournalDto);
         return ResponseEntity.ok().body(newEntry.toString());
     }
 
+    /**
+     * Store a journal entry
+     * 
+     * @param entity
+     * @return
+     */
     @PostMapping("/journal")
-    public ResponseEntity<String> storeJournalEntry(@RequestBody String entity) {
-        // [TODO]: handle request
-        logRequest("POST", "/journal", entity);
-        return ResponseEntity.ok().body("A journal entry should be stored");
+    public ResponseEntity<String> storeJournalEntry(@ModelAttribute StoreJournalDto storeJournalDto) {
+        logRequest("POST", "/journal", storeJournalDto.toString());
+        journalService.storeJournalEntry(storeJournalDto);
+        return ResponseEntity.ok().body("Journal entry should be stored");
     }
 
+    /**
+     * Delete a journal entry
+     * 
+     * @param deleteRequest
+     * @return
+     */
     @DeleteMapping("/journal")
-    public ResponseEntity<String> deleteJournalEntry(@RequestBody String entity) {
-        // [TODO]: handle request
-        logRequest("DELETE", "/journal", entity);
+    public ResponseEntity<String> deleteJournalEntry(@RequestBody DeleteJournalRequest deleteRequest) {
+        logRequest("DELETE", "/journal", deleteRequest.toString());
+        journalService.deleteJournal(deleteRequest.data()._id());
         return ResponseEntity.ok().body("A journal entry should be deleted");
     }
 
-    @GetMapping("/journals")
-    public ResponseEntity<String> getAllJournals() {
-        // [TODO]: handle request
+    /**
+     * Get all journal entries
+     * 
+     * @return
+     */
+    @GetMapping("/journal")
+    public ResponseEntity<List<Journal>> getAllJournals() {
         logRequest("GET", "/journals", null);
-        return ResponseEntity.ok().body("All journals should be retrieved");
+        return ResponseEntity.ok(journalService.getAllJournals());
     }
 
     private void logRequest(String method, String endpoint, String body) {
